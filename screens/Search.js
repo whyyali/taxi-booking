@@ -2,15 +2,19 @@ import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-na
 import Icon from "react-native-vector-icons/Feather";
 import SearchBox from '../components/SearchBox';
 import LocationIcon from "react-native-vector-icons/Fontisto";
+import FavouriteCard from '../components/FavouriteCard';
+import VisitedPlacesCard from '../components/VisitedPlacesCard';
+import { useNavigation } from "@react-navigation/native";
 
 const Search = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.SearchContainer}>
       <SafeAreaView>
         <View style={styles.SearchCard}>
           <View style={styles.SearchDropBox}>
             <Text style={styles.SearchDropText}>Drop location</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=> {navigation.navigate("Home")}}>
                 <Icon name='x' size={24}/>
             </TouchableOpacity>
           </View>
@@ -22,10 +26,16 @@ const Search = () => {
                 <LocationIcon name='map-marker-alt' size={24} style={styles.BottomBoxIcon}/>
                 <Text style={styles.BottomBoxText}>Tap to select from map</Text>
               </View>
-              <TouchableOpacity style={styles.BottomButton}>
+              <TouchableOpacity style={styles.BottomButton} >
                 <Icon  name='arrow-right' size={22} color={"#fff"}/>
               </TouchableOpacity>
           </View>
+        </View>
+        <View style={styles.FavouriteCard}>
+            <FavouriteCard />
+        </View>
+        <View style={styles.FavouriteCard}>
+            <VisitedPlacesCard />
         </View>
       </SafeAreaView>
     </View>
@@ -99,5 +109,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#000"
+  },
+  FavouriteCard:{
+    marginTop: 20,
+    marginHorizontal: 10,
+    padding: 10,
+    shadowColor: "gray",
+    borderRadius: 5,
+    shadowOffset: {
+      height: 1,
+      width: 0
+    },
+    shadowRadius: 20,
+    shadowOpacity: 0.05,
+    elevation: 3
   }
 })
