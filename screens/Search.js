@@ -26,7 +26,7 @@ const Search = () => {
                 <LocationIcon name='map-marker-alt' size={24} style={styles.BottomBoxIcon}/>
                 <Text style={styles.BottomBoxText}>Tap to select from map</Text>
               </View>
-              <TouchableOpacity style={styles.BottomButton} >
+              <TouchableOpacity style={styles.BottomButton} onPress={()=> {navigation.navigate("Book")}}>
                 <Icon  name='arrow-right' size={22} color={"#fff"}/>
               </TouchableOpacity>
           </View>
