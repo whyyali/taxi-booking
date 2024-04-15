@@ -1,9 +1,9 @@
 import { SafeAreaView, StyleSheet, Text, Dimensions, TouchableOpacity, View } from 'react-native';
-import MapView, { MarkerAnimated } from "react-native-maps";
+import MapView, {MarkerAnimated } from "react-native-maps";
+import MapViewDirections from 'react-native-maps-directions';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import mapStyle from "../assets/Style/Style";
 import Icon from "react-native-vector-icons/Feather";
-import LocationIcon from "react-native-vector-icons/Fontisto";
 import VehicleBox from '../components/VehicleBox';
 import { Vehicles } from "../components/data";
 import { useState } from 'react';
@@ -15,7 +15,6 @@ const Book = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { selectedVehicle, currentLocation, destinationLocation } = route.params;
-  console.log(selectedVehicle, currentLocation, destinationLocation);
 
   const [selectVechicle, setSelectVechicle] = useState(selectedVehicle);
 
@@ -29,11 +28,31 @@ const Book = () => {
   return (
     <View style={styles.BookingContainer}>
       <MapView provider='google' style={[StyleSheet.absoluteFillObject]} initialRegion={{ latitude: 30.66773, longitude: 73.11231, latitudeDelta: 0.01, longitudeDelta: 0.01 * RATIO, }} customMapStyle={mapStyle}>
-        <MarkerAnimated coordinate={{ latitude: 30.66773, longitude: 73.11231 }}>
-          <View style={styles.LocationPin}>
-            <LocationIcon name='map-marker-alt' size={26} color={"#02dc9f"} />
+        <MarkerAnimated coordinate={{ latitude: currentLocation.latitude, longitude: currentLocation.longitude }}>
+          <View style={[styles.LocationBox , {borderLeftColor: "red"}]}>
+             <Text>Current Location</Text>
+          </View>
+          <View style={[styles.DotWrapper, {backgroundColor: "rgba(247, 70, 86, 0.25)"}]}>
+             <View style={[styles.Dot, {backgroundColor: "red"}]} />
           </View>
         </MarkerAnimated>
+        <MarkerAnimated coordinate={{ latitude:30.671175250204 , longitude: 73.12049594755679 }}>
+          <View style={[styles.LocationBox , {borderLeftColor: "green"}]}>
+            <Text>{destinationLocation}</Text>
+          </View>
+          <View style={[styles.DotWrapper, {backgroundColor: "rgba(2, 213, 255, 0.25)"}]}>
+             <View style={[styles.Dot, {backgroundColor: "green"}]} />
+          </View>
+        </MarkerAnimated>
+        <MapViewDirections 
+        origin={{latitude: currentLocation.latitude, longitude: currentLocation.longitude}} 
+        destination={{latitude:30.671175250204, longitude: 73.12049594755679 }}
+        apikey={''}  // add key 
+        mode='WALKING'
+        strokeColor='gray'
+        strokeWidth={4}
+        lineDashPattern={[6,6]} 
+         />
       </MapView>
 
       <View style={styles.BookingHeader}>
@@ -151,5 +170,25 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#fff",
     padding: 20
+  },
+  DotWrapper:{
+    height: 30,
+    width: 30,
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+  },
+  Dot:{
+    height: 12,
+    width: 12,
+    borderRadius: 20
+  },
+  LocationBox:{
+    width: 150,
+    paddingLeft: 8,
+    backgroundColor: "#fff",
+    position: "relative",
+    borderLeftWidth: 6,
   }
 })
