@@ -23,7 +23,7 @@ const Book = () => {
 
       <View style={styles.BookingHeader}>
         <Icon name='menu' size={24} color={"#000"} />
-        <TouchableOpacity onPress={() => { navigation.navigate("Home") }}>
+        <TouchableOpacity onPress={() => { navigation.navigate("Search") }}>
           <Icon name='x' size={24} color={"#000"} />
         </TouchableOpacity>
       </View>

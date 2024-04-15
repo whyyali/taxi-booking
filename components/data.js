@@ -1,4 +1,4 @@
-export default FavouritePlaces = [
+export const FavouritePlaces = [
     {
       id: '1',
       title: 'Creative Software - Office',
@@ -15,3 +15,31 @@ export default FavouritePlaces = [
       subtitle: 'near jannah library, Sahiwal',
     },
   ];
+
+export const Vehicles = [
+  {
+    id: "1",
+    name: "Car",
+    icon: "car-side"
+  },
+  {
+    id: "2",
+    name: "Tuk",
+    icon: "rickshaw"
+  },
+  {
+    id: "3",
+    name: "Van",
+    icon: "van-passenger"
+  },
+  {
+    id: "4",
+    name: "Truck",
+    icon: "truck"
+  },
+  {
+    id: "5",
+    name: "Bus",
+    icon: "bus-side"
+  },
+]

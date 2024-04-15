@@ -4,10 +4,15 @@ import SearchBox from '../components/SearchBox';
 import LocationIcon from "react-native-vector-icons/Fontisto";
 import FavouriteCard from '../components/FavouriteCard';
 import VisitedPlacesCard from '../components/VisitedPlacesCard';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation , useRoute} from "@react-navigation/native";
 
-const Search = () => {
+const Search = ({}) => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const {selectedVehicle, currentLocation} = route.params;
+
+  console.log(selectedVehicle, currentLocation)
+
   return (
     <View style={styles.SearchContainer}>
       <SafeAreaView>

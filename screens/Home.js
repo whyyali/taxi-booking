@@ -6,20 +6,36 @@ import Icon from "react-native-vector-icons/Feather";
 import LocationIcon from "react-native-vector-icons/Fontisto";
 import SearchBox from '../components/SearchBox';
 import VehicleBox from '../components/VehicleBox';
+import { Vehicles } from "../components/data";
+import { useState } from 'react';
 
 const { width, height } = Dimensions.get("window")
 const RATIO = width / height
 
 const Home = () => {
   const navigation = useNavigation();
+  const [selectedPlace, setSelectedPlace] = useState({latitude: 30.66773, longitude: 73.11231});
+  const [selectVechicle, setSelectVechicle] = useState(Vehicles[0].id);
 
   const handlePress = ()=>{
-    navigation.navigate("Search")
+    navigation.navigate("Search", {
+      selectedVehicle: Vehicles[selectVechicle-1].name,
+      currentLocation: selectedPlace
+    })
   }
+
+  const handleVechile = (id) =>{
+    setSelectVechicle(id)
+  }
+
+  const handleLocationChange = (region) => {
+    setSelectedPlace({latitude: region.latitude , longitude: region.longitude});
+  }
+
   return (
     <View style={styles.HomeScreenContainer}>
-      <MapView provider='google' style={[StyleSheet.absoluteFillObject]} initialRegion={{ latitude: 30.66773, longitude: 73.11231, latitudeDelta: 0.01, longitudeDelta: 0.01 * RATIO, }} customMapStyle={mapStyle}>
-      <MarkerAnimated coordinate={{latitude: 30.66773, longitude: 73.11231}}>
+      <MapView provider='google' style={[StyleSheet.absoluteFillObject]} initialRegion={{ latitude: selectedPlace.latitude, longitude: selectedPlace.longitude, latitudeDelta: 0.01, longitudeDelta: 0.01 * RATIO, }} customMapStyle={mapStyle} onRegionChange={handleLocationChange}>
+      <MarkerAnimated coordinate={{latitude: selectedPlace.latitude, longitude: selectedPlace.longitude}}>
          <View style={styles.LocationPin}>
             <LocationIcon name='map-marker-alt' size={26} color={"#02dc9f"}/>
          </View>
@@ -36,11 +52,11 @@ const Home = () => {
         </SafeAreaView>
        
         <View style={styles.VehicleCategoryWrapper}>
-          <VehicleBox heading={"Car"} id={1} name={"car-side"} library={""} />
-          <VehicleBox heading={"Tuk"} name={"rickshaw"} library={""} />
-          <VehicleBox heading={"Van"} name={"van-passenger"} library={""} />
-          <VehicleBox heading={"Truck"} name={"truck"} library={""} />
-          <VehicleBox heading={"Bus"} name={"bus-side"} library={""} />
+          {Vehicles.map((data)=>(
+            <View key={data.id}>
+               <VehicleBox  name={data.name} icon={data.icon}  library={""} isSelected={selectVechicle === data.id} onPress={()=>{handleVechile(data.id)}}/>
+            </View>
+          ))}
         </View>
 
       </View>

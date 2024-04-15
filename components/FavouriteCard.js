@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import FavouriteCardItem from './FavouriteCardItem';
-import FavouritePlaces from "./data";
+import { FavouritePlaces } from "./data";
 
 const FavouriteCard = ({}) => {
 
@@ -8,8 +8,8 @@ const FavouriteCard = ({}) => {
     <View style={styles.CardContainer}>
       <Text style={styles.CardHeading}>Favourite Places</Text>
       {FavouritePlaces.map((data) => (
-        <View style={styles.CardBox}>
-            <FavouriteCardItem key={data.id} title={data.title} subtitle={data.subtitle} />
+        <View style={styles.CardBox} key={data.id}>
+            <FavouriteCardItem title={data.title} subtitle={data.subtitle} />
         </View>
       ))}
     </View>
