@@ -19,7 +19,7 @@ const Home = () => {
 
   const handlePress = ()=>{
     navigation.navigate("Search", {
-      selectedVehicle: Vehicles[selectVechicle-1].name,
+      selectedVehicle: {name: Vehicles[selectVechicle-1].name, id:selectVechicle},
       currentLocation: selectedPlace
     })
   }

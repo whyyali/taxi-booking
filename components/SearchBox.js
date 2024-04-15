@@ -1,14 +1,14 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import Icon from "react-native-vector-icons/Feather";
 
-const SearchBox = ({title, color, card}) => {
+const SearchBox = ({title, color, card, onChangeText}) => {
     return (
         <View style={styles.SearchBoxContainer}>
             <View style={styles.SearchBoxContainerInner}>
                 <View style={[styles.Dot, {backgroundColor: color }]} />
                 <View>
                   {card === true ? (
-                  <TextInput placeholder={title} style={styles.InputTextBox}/>
+                  <TextInput placeholder={title} style={styles.InputTextBox} onChangeText={onChangeText}/>
                   ) : (
                     <Text style={styles.InputTextBox}>{title}</Text>
                   )}

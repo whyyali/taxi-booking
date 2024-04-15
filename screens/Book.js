@@ -1,16 +1,31 @@
 import { SafeAreaView, StyleSheet, Text, Dimensions, TouchableOpacity, View } from 'react-native';
 import MapView, { MarkerAnimated } from "react-native-maps";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import mapStyle from "../assets/Style/Style";
 import Icon from "react-native-vector-icons/Feather";
 import LocationIcon from "react-native-vector-icons/Fontisto";
 import VehicleBox from '../components/VehicleBox';
+import { Vehicles } from "../components/data";
+import { useState } from 'react';
 
 const { width, height } = Dimensions.get("window")
 const RATIO = width / height
 
 const Book = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { selectedVehicle, currentLocation, destinationLocation } = route.params;
+  console.log(selectedVehicle, currentLocation, destinationLocation);
+
+  const [selectVechicle, setSelectVechicle] = useState(selectedVehicle);
+
+  const handleVechile = (id) => {
+    const selectedVechicle = Vehicles.find(vehicle => vehicle.id === id);
+    if (selectedVechicle) {
+      setSelectVechicle(selectedVechicle);
+    }
+  }
+
   return (
     <View style={styles.BookingContainer}>
       <MapView provider='google' style={[StyleSheet.absoluteFillObject]} initialRegion={{ latitude: 30.66773, longitude: 73.11231, latitudeDelta: 0.01, longitudeDelta: 0.01 * RATIO, }} customMapStyle={mapStyle}>
@@ -23,7 +38,7 @@ const Book = () => {
 
       <View style={styles.BookingHeader}>
         <Icon name='menu' size={24} color={"#000"} />
-        <TouchableOpacity onPress={() => { navigation.navigate("Search") }}>
+        <TouchableOpacity onPress={() => { navigation.navigate("Home") }}>
           <Icon name='x' size={24} color={"#000"} />
         </TouchableOpacity>
       </View>
@@ -31,11 +46,11 @@ const Book = () => {
       <SafeAreaView style={{ flex: 1, justifyContent: "flex-end" }}>
         <View style={styles.BookingItemCategories}>
           <View style={styles.BookingCategoryWrapper}>
-            <VehicleBox heading={"Car"} id={1} name={"car-side"} library={""} />
-            <VehicleBox heading={"Tuk"} name={"rickshaw"} library={""} />
-            <VehicleBox heading={"Van"} name={"van-passenger"} library={""} />
-            <VehicleBox heading={"Truck"} name={"truck"} library={""} />
-            <VehicleBox heading={"Bus"} name={"bus-side"} library={""} />
+            {Vehicles.map((data) => (
+              <View key={data.id}>
+                <VehicleBox name={data.name} icon={data.icon} library={""} isSelected={selectVechicle.id === data.id} onPress={() => { handleVechile(data.id) }} />
+              </View>
+            ))}
           </View>
           <View style={styles.BookingNoticeContainer}>
             <View style={styles.BookingDistance}><Text style={styles.BookingDistanceText}>Distance 100km</Text></View>
@@ -43,12 +58,12 @@ const Book = () => {
           </View>
 
           <View style={styles.BookingVechicle}>
-             <View style={styles.BookingVechicleBox}>
-             <Text style={[styles.BookingVechicleNameText, {fontWeight: "bold"}]}>Car</Text>
-             </View>
-             <View style={styles.BookingVechicleBox}>
-             <Text style={[styles.BookingVechicleNameText, {textTransform: "uppercase"}]}>abc123</Text>
-             </View>
+            <View style={styles.BookingVechicleBox}>
+              <Text style={[styles.BookingVechicleNameText, { fontWeight: "bold" }]}>{selectVechicle.name}</Text>
+            </View>
+            <View style={styles.BookingVechicleBox}>
+              <Text style={[styles.BookingVechicleNameText, { textTransform: "uppercase" }]}>abc123</Text>
+            </View>
           </View>
 
           <View style={styles.BookingButton}>
@@ -110,31 +125,31 @@ const styles = StyleSheet.create({
   BookingNoticeText: {
     fontWeight: "400",
   },
-  BookingVechicle:{
+  BookingVechicle: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     padding: 10
   },
-  BookingVechicleBox:{
+  BookingVechicleBox: {
     borderColor: "gray",
     borderWidth: 2,
     paddingHorizontal: 60,
     paddingVertical: 10,
     borderRadius: 10
   },
-  BookingVechicleNameText:{
+  BookingVechicleNameText: {
     fontSize: 16,
   },
-  BookingButton:{
+  BookingButton: {
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#000"
 
   },
-  BookingButtonText:{
+  BookingButtonText: {
     fontSize: 20,
     fontWeight: "bold",
     color: "#fff",
-    padding: 20  
+    padding: 20
   }
 })

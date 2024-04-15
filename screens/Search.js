@@ -5,13 +5,25 @@ import LocationIcon from "react-native-vector-icons/Fontisto";
 import FavouriteCard from '../components/FavouriteCard';
 import VisitedPlacesCard from '../components/VisitedPlacesCard';
 import { useNavigation , useRoute} from "@react-navigation/native";
+import { useState } from 'react';
 
 const Search = ({}) => {
   const navigation = useNavigation();
   const route = useRoute();
   const {selectedVehicle, currentLocation} = route.params;
+  const [searchText, setSearchText] = useState("");
 
-  console.log(selectedVehicle, currentLocation)
+  const handleButtonPress = ()=>{
+    navigation.navigate("Book", {
+      currentLocation: currentLocation,
+      selectedVehicle: selectedVehicle,
+      destinationLocation: searchText
+    })
+  }
+  
+  const handleSearchTextChange = (text)=>{
+    setSearchText(text);
+  }
 
   return (
     <View style={styles.SearchContainer}>
@@ -24,14 +36,14 @@ const Search = ({}) => {
             </TouchableOpacity>
           </View>
           <View style={styles.SearchBox}>
-            <SearchBox card={true} title={"Where are you going?"} color={"#ff4858"}/>
+            <SearchBox card={true} title={"Where are you going?"} onChangeText={handleSearchTextChange} color={"#ff4858"}/>
           </View>
           <View style={styles.SearchBoxBottom}>
               <View style={styles.BottomBox}>
                 <LocationIcon name='map-marker-alt' size={24} style={styles.BottomBoxIcon}/>
                 <Text style={styles.BottomBoxText}>Tap to select from map</Text>
               </View>
-              <TouchableOpacity style={styles.BottomButton} onPress={()=> {navigation.navigate("Book")}}>
+              <TouchableOpacity style={styles.BottomButton} onPress={()=> handleButtonPress()}>
                 <Icon  name='arrow-right' size={22} color={"#fff"}/>
               </TouchableOpacity>
           </View>
